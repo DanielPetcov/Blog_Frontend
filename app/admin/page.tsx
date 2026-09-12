@@ -1,4 +1,5 @@
 import CreateArticle from "./components/CreateArticle";
+import LogoutButton from "./components/LogoutButton";
 
 type Article = {
   id: string;
@@ -19,6 +20,8 @@ export default async function AdminPage() {
       <p>total amount of articles: {articles.length}</p>
 
       <CreateArticle />
+
+      <LogoutButton />
     </div>
   );
 }

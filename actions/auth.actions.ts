@@ -7,16 +7,28 @@ import { LoginForm } from "@/lib/types/auth";
 import { loginRequest } from "@/lib/api/auth";
 
 export async function loginAction(data: LoginForm) {
-  const { access_token } = await loginRequest(data);
+  const response = await loginRequest(data);
+
+  if (!response.success) {
+    return response;
+  }
 
   const cookieStore = await cookies();
 
-  cookieStore.set("access_token", access_token, {
+  cookieStore.set("access_token", response.data.access_token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
     path: "/",
   });
 
-  redirect("/admin");
+  return response;
+}
+
+export async function logoutAction() {
+  const cookieStore = await cookies();
+
+  cookieStore.delete("access_token");
+
+  redirect("/admin/login");
 }

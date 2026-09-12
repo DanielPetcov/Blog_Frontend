@@ -3,6 +3,16 @@ export type LoginForm = {
   password: string;
 };
 
-export type LoginResponse = {
+export type LoginResponse =
+  | {
+      success: true;
+      data: LoginResponseData;
+    }
+  | {
+      success: false;
+      error: string;
+    };
+
+export type LoginResponseData = {
   access_token: string;
 };

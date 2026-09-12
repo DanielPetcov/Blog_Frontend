@@ -8,78 +8,109 @@ import { LoginForm } from "@/lib/types/auth";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/components/ui/input-group";
+import { EyeClosed, EyeIcon } from "lucide-react";
+
+import { FieldLabel, FieldError, Field } from "@/components/ui/field";
+import { redirect } from "next/navigation";
 
 export default function LoginPage() {
   const {
     register,
     handleSubmit,
     setError,
-    formState: { errors },
+    clearErrors,
+    formState: { errors, isSubmitting },
   } = useForm<LoginForm>();
 
   const [visiblePass, setVisiblePass] = useState(false);
 
   const onSubmit: SubmitHandler<LoginForm> = async (data) => {
-    try {
-      await loginAction(data);
-    } catch (error) {
-      const message = error instanceof Error ? error.message : String(error);
-      setError("form", { message });
+    clearErrors("root.server");
+
+    const response = await loginAction(data);
+
+    if (!response.success) {
+      setError("root.server", {
+        type: "server",
+        message: response.error,
+      });
+
+      return;
     }
+
+    redirect("/admin");
   };
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-gray-100">
-      <div className="p-5 rounded-md bg-white shadow-md max-w-md">
-        <div>
-          <p className="text-sm font-semibold">Login for admin</p>
-          <p className="text-xs font-light">
-            If you are not the admin of this blog, <br /> leave the page :)
+    <main className="min-h-screen flex items-center justify-center bg-muted p-5">
+      <div className="w-full max-w-md rounded-lg border bg-background p-6 shadow-sm">
+        <div className="space-y-1">
+          <h1 className="text-lg font-semibold">Admin login</h1>
+          <p className="text-sm text-muted-foreground">
+            Sign in to manage the blog.
           </p>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-2 mt-5">
-          <div>
-            <p className="text-sm">Email:</p>
+        <form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-4">
+          <Field>
+            <FieldLabel htmlFor="email">Email</FieldLabel>
             <Input
-              {...register("email", { required: true })}
+              id="email"
+              {...register("email", {
+                required: "Email is required",
+              })}
               type="email"
-              className="rounded-md"
+              autoComplete="email"
             />
-            {errors.email && (
-              <p className="text-sm font-semibold text-red-500">
-                {errors.email.message}
-              </p>
-            )}
-          </div>
-          <div>
-            <p className="text-sm">Password:</p>
-            <Input
-              {...register("password", { required: true })}
-              type={visiblePass ? "text" : "password"}
-              className="rounded-md"
-            />
-            {errors.password && (
-              <p className="text-sm font-semibold text-red-500">
-                {errors.password.message}
-              </p>
-            )}
-            <button type="button" onClick={() => setVisiblePass(!visiblePass)}>
-              see pass
-            </button>
-          </div>
+            {errors.email && <FieldError>{errors.email.message}</FieldError>}
+          </Field>
 
-          {errors.form && (
-            <p className="text-sm font-semibold text-red-500">
-              {errors.form.message}
-            </p>
+          <Field>
+            <FieldLabel htmlFor="password">Password</FieldLabel>
+
+            <InputGroup>
+              <InputGroupInput
+                id="password"
+                {...register("password", {
+                  required: "Password is required",
+                })}
+                type={visiblePass ? "text" : "password"}
+                autoComplete="current-password"
+              />
+
+              <InputGroupAddon align="inline-end">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon-sm"
+                  onClick={() => setVisiblePass((prev) => !prev)}
+                  className="text-muted-foreground hover:text-foreground"
+                  aria-label={visiblePass ? "Hide password" : "Show password"}
+                >
+                  {visiblePass ? <EyeIcon /> : <EyeClosed />}
+                </Button>
+              </InputGroupAddon>
+            </InputGroup>
+
+            {errors.password && (
+              <FieldError>{errors.password.message}</FieldError>
+            )}
+          </Field>
+
+          {errors.root?.server && (
+            <FieldError>{errors.root.server.message}</FieldError>
           )}
 
-          <Button type="submit" className="w-full rounded-md">
-            Login
+          <Button type="submit" className="w-full" disabled={isSubmitting}>
+            {isSubmitting ? "Logging in..." : "Login"}
           </Button>
         </form>
       </div>
-    </div>
+    </main>
   );
 }
