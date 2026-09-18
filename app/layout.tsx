@@ -27,7 +27,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full">
         <div className="background-pattern fixed z-[-1] w-full h-full" />
         <Navbar />
-        <div className="p-5">{children}</div>
+        <div>{children}</div>
       </body>
     </html>
   );

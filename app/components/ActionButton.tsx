@@ -4,9 +4,11 @@ import Link from "next/link";
 import { ReactNode } from "react";
 
 export default function ActionButton({
+  className,
   children,
   href,
 }: {
+  className?: string;
   children: ReactNode;
   href?: string;
 }) {
@@ -16,14 +18,20 @@ export default function ActionButton({
   if (href)
     return (
       <Link href={href}>
-        <Button className={cn("font-mono", glassEffect)} variant={"ghost"}>
+        <Button
+          className={cn("font-mono", glassEffect, className)}
+          variant={"ghost"}
+        >
           {children}
         </Button>
       </Link>
     );
 
   return (
-    <Button className={cn("font-mono", glassEffect)} variant={"ghost"}>
+    <Button
+      className={cn("font-mono ", glassEffect, className)}
+      variant={"ghost"}
+    >
       {children}
     </Button>
   );
