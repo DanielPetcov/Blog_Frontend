@@ -6,7 +6,7 @@ export default function Navbar() {
   return (
     <div className="flex items-center justify-between py-2 px-5">
       <Link href="/" className="font-mono">
-        Home
+        <span className="text-brand font-bold">d/p</span>
       </Link>
 
       <div className="flex items-center justify-between gap-6">

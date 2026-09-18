@@ -10,7 +10,8 @@ export default function ActionButton({
   children: ReactNode;
   href?: string;
 }) {
-  const glassEffect = "bg-white/20 shadow-md ring-1 ring-black/5";
+  const glassEffect =
+    "bg-brand text-brand-soft hover:bg-brand-hover hover:text-brand-soft shadow-md ring-1 ring-black/5";
 
   if (href)
     return (

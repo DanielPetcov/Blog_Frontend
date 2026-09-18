@@ -4,7 +4,7 @@ export default async function BlogListPage() {
   return (
     <PageHero
       pageTitle="List of Articles"
-      pageSubtitle="Here you will find a compresive list of articles"
+      pageSubtitle="[ DANIEL'S TECHNICAL JOURNAL ]"
     />
   );
 }
