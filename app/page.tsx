@@ -94,9 +94,11 @@ export default function Home() {
       <div className="mt-40">
         <div className="space-y-6 font-mono">
           <h2 className="uppercase text-lg font-semibold">Topics</h2>
-          {topics.map((topic) => (
-            <TopicRow key={topic.slug} {...topic} />
-          ))}
+          <div className="space-y-4">
+            {topics.map((topic) => (
+              <TopicRow key={topic.slug} {...topic} />
+            ))}
+          </div>
         </div>
       </div>
     </div>
