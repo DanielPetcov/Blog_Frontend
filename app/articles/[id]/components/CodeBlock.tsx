@@ -1,4 +1,5 @@
 import { codeToHtml } from "shiki";
+import CopyCodeButton from "./CopyCodeButton";
 
 interface CodeBlockProps {
   language: string;
@@ -25,7 +26,10 @@ export default async function CodeBlock({
     <div className="my-10 overflow-hidden border border-navy/20 bg-surface sm:my-14">
       <div className="flex items-center justify-between border-b border-navy/20 bg-navy px-4 py-3 font-mono text-[10px] uppercase tracking-[0.12em] text-brand-soft">
         <span>{filename ?? "snippet"}</span>
-        <span>{isTypeScript ? "TypeScript" : language}</span>
+        <div className="flex items-center gap-4">
+          <span>{isTypeScript ? "TypeScript" : language}</span>
+          <CopyCodeButton code={code} />
+        </div>
       </div>
       {highlightedCode ? (
         <div
