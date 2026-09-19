@@ -11,12 +11,11 @@ export default function TopicRow({ slug, title, count }: TopicRowProps) {
   return (
     <Link
       href={`/articles?topic=${slug}`}
-      className="flex items-center justify-between max-w-sm gap-20 text-sm hover:text-brand transition-colors"
+      className="group grid grid-cols-[1fr_auto_auto] items-center gap-4 border-t border-border py-4 font-mono text-[11px] uppercase tracking-[0.1em] transition-[padding,background-color] hover:bg-brand-soft/50 hover:pl-3 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
     >
-      <div className="capitalize overflow-hidden text-ellipsis">{title}</div>
-      <div className="flex items-center gap-2 text-nowrap">
-        {count} articles <ArrowRight className="size-4" />
-      </div>
+      <span className="min-w-0 truncate text-navy">{title}</span>
+      <span className="text-foreground-muted">{count} articles</span>
+      <ArrowRight className="size-4 text-brand transition-transform group-hover:translate-x-1" />
     </Link>
   );
 }

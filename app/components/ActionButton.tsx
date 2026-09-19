@@ -1,7 +1,6 @@
-import { Button } from "@/components/ui/button";
 import { cn } from "cn";
 import Link from "next/link";
-import { ReactNode } from "react";
+import { type ReactNode } from "react";
 
 export default function ActionButton({
   className,
@@ -12,27 +11,19 @@ export default function ActionButton({
   children: ReactNode;
   href?: string;
 }) {
-  const glassEffect =
-    "bg-brand text-brand-soft hover:bg-brand-hover hover:text-brand-soft shadow-md ring-1 ring-black/5";
+  const actionClassName =
+    "inline-flex min-h-11 items-center justify-center gap-3 border border-brand bg-brand px-4 py-3 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-white transition-colors hover:bg-brand-hover focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand";
 
   if (href)
     return (
-      <Link href={href}>
-        <Button
-          className={cn("font-mono", glassEffect, className)}
-          variant={"ghost"}
-        >
-          {children}
-        </Button>
+      <Link href={href} className={cn(actionClassName, className)}>
+        {children}
       </Link>
     );
 
   return (
-    <Button
-      className={cn("font-mono ", glassEffect, className)}
-      variant={"ghost"}
-    >
+    <button className={cn(actionClassName, className)}>
       {children}
-    </Button>
+    </button>
   );
 }

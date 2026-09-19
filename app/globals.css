@@ -73,11 +73,12 @@ body {
 }
 
 :root {
+  /* Core palette: warm paper, violet brand, and navy typography. */
   --background: #f3eee6;
   --surface: #faf7f2;
   --surface-elevated: #fffcf8;
 
-  --foreground: #122238;
+  --foreground: #10233b;
   --foreground-muted: #687184;
 
   --brand: #7257e8;
@@ -89,36 +90,35 @@ body {
 
   --border: rgba(18, 34, 56, 0.12);
   --border-strong: rgba(18, 34, 56, 0.2);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  --card: var(--surface);
+  --card-foreground: var(--navy);
+  --popover: var(--surface-elevated);
+  --popover-foreground: var(--navy);
+  --primary: var(--brand);
+  --primary-foreground: #ffffff;
+  --secondary: #ebe6de;
+  --secondary-foreground: var(--navy);
+  --muted: #ebe6de;
+  --muted-foreground: var(--foreground-muted);
+  --accent: var(--brand-soft);
+  --accent-foreground: var(--navy);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.5rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --input: var(--border);
+  --ring: var(--brand);
+  --chart-1: var(--brand);
+  --chart-2: #1a314e;
+  --chart-3: #a696f2;
+  --chart-4: #687184;
+  --chart-5: #10233b;
+  --radius: 0;
+  --sidebar: var(--surface);
+  --sidebar-foreground: var(--navy);
+  --sidebar-primary: var(--brand);
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: var(--brand-soft);
+  --sidebar-accent-foreground: var(--navy);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--brand);
 }
 
 .dark {
