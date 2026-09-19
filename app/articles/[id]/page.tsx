@@ -47,6 +47,21 @@ const article: Article = {
       type: "paragraph",
       text: "Acknowledging before the work finishes creates at-most-once delivery: fast, but lossy. Acknowledging after the work finishes gives the broker a chance to retry. That one ordering decision affects visibility timeouts, idempotency, and what gets written to disk.",
     },
+    {
+      type: "code",
+      language: "typescript",
+      filename: "broker.ts",
+      code: `type Message = {
+  id: string;
+  payload: unknown;
+  attempts: number;
+};
+
+async function acknowledge(message: Message) {
+  await store.markComplete(message.id);
+  metrics.increment("broker.messages.acknowledged");
+}`,
+    },
     { type: "divider" },
     { type: "heading", level: 2, text: "Keep the first version observable" },
     {
