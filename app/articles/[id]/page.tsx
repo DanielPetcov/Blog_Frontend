@@ -62,6 +62,15 @@ async function acknowledge(message: Message) {
   metrics.increment("broker.messages.acknowledged");
 }`,
     },
+    {
+      type: "diagram",
+      diagramType: "mermaid",
+      content: `flowchart LR
+  Producer[Producer] --> Queue[(Ready queue)]
+  Queue --> Consumer[Consumer]
+  Consumer -->|acknowledge| Complete[(Completed)]
+  Consumer -->|timeout| Queue`,
+    },
     { type: "divider" },
     { type: "heading", level: 2, text: "Keep the first version observable" },
     {

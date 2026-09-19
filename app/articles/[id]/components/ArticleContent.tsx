@@ -1,5 +1,6 @@
 import { type ArticleBlock } from "@/lib/types/article";
 import CodeBlock from "./CodeBlock";
+import MermaidDiagram from "./MermaidDiagram";
 
 const headingStyles = {
   2: "mt-14 text-3xl font-medium leading-[1.02] tracking-[-0.05em] text-navy sm:mt-20 sm:text-4xl",
@@ -83,8 +84,9 @@ export default function ArticleContent({
             return <hr key={index} className="my-12 border-0 border-t border-border sm:my-16" />;
 
           case "diagram":
-            // Diagram rendering is intentionally deferred until the chosen Mermaid renderer is integrated.
-            return null;
+            return block.diagramType === "mermaid" ? (
+              <MermaidDiagram key={index} content={block.content} />
+            ) : null;
 
           default:
             return null;
