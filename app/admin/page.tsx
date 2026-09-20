@@ -1,15 +1,8 @@
-import CreateArticle from "./components/CreateArticle";
-import LogoutButton from "./components/LogoutButton";
+import DashboardContent from "./components/DashboardContent";
+import { getAdminDashboard } from "@/lib/api/admin-dashboard";
 
 export default async function AdminPage() {
-  return (
-    <div>
-      <h1 className="text-2xl font-semibold">Admin Page</h1>
-      <p>This page should be protected</p>
+  const dashboard = await getAdminDashboard();
 
-      <CreateArticle />
-
-      <LogoutButton />
-    </div>
-  );
+  return <DashboardContent data={dashboard} />;
 }
