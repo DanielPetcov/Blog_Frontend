@@ -60,3 +60,22 @@ The dashboard links to these screens. Their endpoints can be implemented when th
 | Public article | `/articles/[slug]` | `GET /articles/:slug` |
 
 Draft preview is intentionally absent: the project currently has no authenticated preview route.
+
+## `POST /admin/articles`
+
+Authentication: required (`Authorization: Bearer <access_token>`)
+
+Used by the new-article form. The payload is sent as JSON:
+
+```ts
+type CreateArticleInput = {
+  title: string;
+  slug: string;
+  description?: string | null;
+  coverImage?: string | null;
+  content: ArticleBlock[];
+  published?: boolean;
+};
+```
+
+The current form creates a single paragraph `ArticleBlock`; future editor work can send the other block variants already defined in `lib/types/create-article.ts`. Return a successful `2xx` response after creation. The frontend does not require a particular response body yet.
