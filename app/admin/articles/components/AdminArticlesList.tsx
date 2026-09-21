@@ -19,6 +19,29 @@ interface AdminArticlesListProps {
 export default function AdminArticlesList({
   articles,
 }: AdminArticlesListProps) {
+  if (articles.length === 0) {
+    return (
+      <div className="border border-dashed border-border bg-surface px-5 py-12 text-center sm:px-8 sm:py-16">
+        <FilePenLine
+          className="mx-auto size-6 text-brand"
+          aria-hidden="true"
+        />
+        <p className="mt-4 text-xl font-medium tracking-[-0.035em] text-navy">
+          No articles yet
+        </p>
+        <p className="mx-auto mt-2 max-w-sm font-mono text-xs leading-6 text-foreground-muted">
+          Create your first article to start building the archive.
+        </p>
+        <Link
+          href="/admin/articles/new"
+          className="mt-6 inline-flex min-h-10 items-center border border-brand bg-brand px-4 py-2 font-mono text-[10px] font-semibold uppercase tracking-[0.1em] text-white transition-colors hover:bg-brand-hover focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
+        >
+          Create your first article
+        </Link>
+      </div>
+    );
+  }
+
   return (
     <div className="border-y border-border">
       {articles.map((article) => (
