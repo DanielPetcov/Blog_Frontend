@@ -3,7 +3,12 @@
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 
-import { createArticleRequest } from "@/lib/api/articles";
+import {
+  createArticleRequest,
+  GetArticlesQuery,
+  getArticlesRequest,
+  GetArticlesRequestResult,
+} from "@/lib/api/articles";
 import type { CreateArticleInput } from "@/lib/types/create-article";
 
 export type CreateArticleActionResult =
@@ -44,4 +49,19 @@ export async function createArticleAction(
   }
 
   return result;
+}
+
+export async function getArticlesAction(
+  query?: GetArticlesQuery,
+): Promise<GetArticlesRequestResult> {
+  const accessToken = (await cookies()).get("access_token")?.value;
+
+  if (!accessToken) {
+    return {
+      success: false,
+      error: "Your session has expired. Please sign in again.",
+    };
+  }
+
+  return getArticlesRequest(accessToken, query);
 }
