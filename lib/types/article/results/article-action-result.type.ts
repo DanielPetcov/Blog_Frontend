@@ -8,6 +8,8 @@ export type CreateArticleActionResult =
   | { success: true; error?: never }
   | { success: false; error: string };
 
+export type UpdateArticleActionResult = CreateArticleActionResult;
+
 export type GetDetailedArticleActionResult =
   | {
       success: true;

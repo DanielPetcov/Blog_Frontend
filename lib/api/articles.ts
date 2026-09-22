@@ -10,6 +10,7 @@ import type {
 } from "@/lib/types/article/article-response.type";
 import type {
   CreateArticleRequestResult,
+  UpdateArticleRequestResult,
   GetArticleRequestResult,
   GetArticlesRequestResult,
   GetArticlesDetailedRequestResult,
@@ -39,6 +40,30 @@ export async function createArticleRequest(
   return {
     success: true,
   };
+}
+
+export async function updateArticleRequest(
+  slug: string,
+  article: CreateArticleInput,
+  accessToken: string,
+): Promise<UpdateArticleRequestResult> {
+  const result = await serverApiRequest<unknown>({
+    path: `admin/articles/${slug}`,
+    method: "PATCH",
+    accessToken,
+    body: article,
+    fallbackError: "We couldn’t update the article. Please try again.",
+    statusErrors: {
+      400: "Please check the article fields and try again.",
+      409: "An article with this slug already exists.",
+    },
+  });
+
+  if (!result.success) {
+    return result;
+  }
+
+  return { success: true };
 }
 
 export function getMainPageArticlesRequest(): Promise<GetArticlesDetailedRequestResult> {

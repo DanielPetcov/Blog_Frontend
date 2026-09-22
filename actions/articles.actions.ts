@@ -7,6 +7,7 @@ import type { GetArticlesQuery } from "@/lib/types/article/article-query.type";
 import type { CreateArticleInput } from "@/lib/types/article/create-article.type";
 import type {
   CreateArticleActionResult,
+  UpdateArticleActionResult,
   GetArticlesActionResult,
   GetArticleActionResult,
   GetDetailedArticlesActionResult,
@@ -15,6 +16,7 @@ import type {
 
 import {
   createArticleRequest,
+  updateArticleRequest,
   getArticleRequest,
   getArticlesRequest,
   getMainPageArticlesRequest,
@@ -92,6 +94,40 @@ export async function createArticleAction(
 
   if (result.success) {
     revalidatePath("/admin");
+  }
+
+  return result;
+}
+
+export async function updateArticleAction(
+  slug: string,
+  input: CreateArticleInput,
+): Promise<UpdateArticleActionResult> {
+  if (!isValidArticleInput(input)) {
+    return {
+      success: false,
+      error: "Please check the article details and try again.",
+    };
+  }
+
+  const accessToken = (await cookies()).get("access_token")?.value;
+
+  if (!accessToken) {
+    return {
+      success: false,
+      error: "Your session has expired. Please sign in again.",
+    };
+  }
+
+  const result = await updateArticleRequest(slug, input, accessToken);
+
+  if (result.success) {
+    revalidatePath("/admin");
+    revalidatePath(`/admin/articles/${slug}/edit`);
+    revalidatePath(`/articles/${slug}`);
+    if (slug !== input.slug) {
+      revalidatePath(`/articles/${input.slug}`);
+    }
   }
 
   return result;
