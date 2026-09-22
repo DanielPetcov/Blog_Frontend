@@ -1,10 +1,30 @@
 import { Search } from "lucide-react";
 import Link from "next/link";
+import type { TopicWithArticleCount } from "@/lib/types/topic";
 
-export default function ArticlesAside({ topics }: { topics: string[] }) {
+type ArticlesAsideProps = {
+  topics: TopicWithArticleCount[];
+  searchQuery?: string;
+  selectedTopic?: string;
+};
+
+function getArticlesHref({ q, topic }: { q?: string; topic?: string }) {
+  const searchParams = new URLSearchParams();
+  if (q) searchParams.set("q", q);
+  if (topic) searchParams.set("topic", topic);
+
+  return searchParams.size ? `/articles?${searchParams}` : "/articles";
+}
+
+export default function ArticlesAside({
+  topics,
+  searchQuery,
+  selectedTopic,
+}: ArticlesAsideProps) {
   return (
     <aside className="lg:sticky lg:top-8 lg:self-start">
       <form role="search">
+        {selectedTopic && <input type="hidden" name="topic" value={selectedTopic} />}
         <label
           htmlFor="article-search"
           className="font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-navy"
@@ -16,6 +36,7 @@ export default function ArticlesAside({ topics }: { topics: string[] }) {
             id="article-search"
             name="q"
             type="search"
+            defaultValue={searchQuery}
             placeholder="Search notes"
             className="min-w-0 flex-1 bg-transparent px-3 py-3 font-mono text-xs text-navy outline-none placeholder:text-foreground-muted"
           />
@@ -37,25 +58,24 @@ export default function ArticlesAside({ topics }: { topics: string[] }) {
           aria-label="Article topics"
           className="mt-3 border-b border-border"
         >
-          {topics.map((topic) => {
-            const isAllTopics = topic === "All topics";
-            const href = isAllTopics
-              ? "/articles"
-              : `/articles?topic=${encodeURIComponent(topic.toLowerCase())}`;
-
-            return (
-              <Link
-                key={topic}
-                href={href}
-                className="flex items-center justify-between border-t border-border py-3 font-mono text-[10px] font-semibold uppercase tracking-[0.1em] text-navy transition-[padding,background-color,color] hover:bg-brand-soft/50 hover:pl-2 hover:text-brand focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
-              >
-                {topic}
-                {!isAllTopics && (
-                  <span className="text-foreground-muted">↗</span>
-                )}
-              </Link>
-            );
-          })}
+          <Link
+            href={getArticlesHref({ q: searchQuery })}
+            aria-current={selectedTopic ? undefined : "page"}
+            className="flex items-center justify-between border-t border-border py-3 font-mono text-[10px] font-semibold uppercase tracking-[0.1em] text-navy transition-[padding,background-color,color] hover:bg-brand-soft/50 hover:pl-2 hover:text-brand focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
+          >
+            All topics
+          </Link>
+          {topics.map((topic) => (
+            <Link
+              key={topic.id}
+              href={getArticlesHref({ q: searchQuery, topic: topic.slug })}
+              aria-current={topic.slug === selectedTopic ? "page" : undefined}
+              className={`flex items-center justify-between border-t border-border py-3 font-mono text-[10px] font-semibold uppercase tracking-[0.1em] transition-[padding,background-color,color] hover:bg-brand-soft/50 hover:pl-2 hover:text-brand focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand ${topic.slug === selectedTopic ? "bg-brand-soft text-brand" : "text-navy"}`}
+            >
+              <span>{topic.name}</span>
+              <span className="text-foreground-muted">{topic.articleCount}</span>
+            </Link>
+          ))}
         </nav>
       </div>
     </aside>
