@@ -1,4 +1,4 @@
-import { type ArticleBlock } from "@/lib/types/article";
+import { ArticleBlock } from "@/lib/types/article/article-block.type";
 import CodeBlock from "./CodeBlock";
 import MermaidDiagram from "./MermaidDiagram";
 
@@ -26,7 +26,10 @@ export default function ArticleContent({
         switch (block.type) {
           case "paragraph":
             return (
-              <p key={index} className="mt-6 text-[1.05rem] leading-8 text-navy/85 sm:text-lg sm:leading-8">
+              <p
+                key={index}
+                className="mt-6 text-[1.05rem] leading-8 text-navy/85 sm:text-lg sm:leading-8"
+              >
                 {block.text}
               </p>
             );
@@ -35,7 +38,11 @@ export default function ArticleContent({
             const Heading = `h${block.level}` as "h2" | "h3" | "h4";
 
             return (
-              <Heading key={index} id={headingId(block.text)} className={headingStyles[block.level]}>
+              <Heading
+                key={index}
+                id={headingId(block.text)}
+                className={headingStyles[block.level]}
+              >
                 {block.text}
               </Heading>
             );
@@ -43,7 +50,10 @@ export default function ArticleContent({
 
           case "image":
             return (
-              <figure key={index} className="my-10 border border-border bg-surface p-2 sm:my-14 sm:p-3">
+              <figure
+                key={index}
+                className="my-10 border border-border bg-surface p-2 sm:my-14 sm:p-3"
+              >
                 {/* The backend supplies image URLs; this remains intentionally unoptimized until its image policy is defined. */}
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={block.src} alt={block.alt} className="w-full" />
@@ -68,7 +78,10 @@ export default function ArticleContent({
 
           case "quote":
             return (
-              <blockquote key={index} className="my-10 border-l-2 border-brand pl-6 sm:my-14 sm:pl-8">
+              <blockquote
+                key={index}
+                className="my-10 border-l-2 border-brand pl-6 sm:my-14 sm:pl-8"
+              >
                 <p className="text-2xl font-medium leading-tight tracking-[-0.04em] text-navy sm:text-3xl">
                   “{block.text}”
                 </p>
@@ -81,7 +94,12 @@ export default function ArticleContent({
             );
 
           case "divider":
-            return <hr key={index} className="my-12 border-0 border-t border-border sm:my-16" />;
+            return (
+              <hr
+                key={index}
+                className="my-12 border-0 border-t border-border sm:my-16"
+              />
+            );
 
           case "diagram":
             return block.diagramType === "mermaid" ? (

@@ -1,4 +1,5 @@
-import { type ReactNode } from "react";
+import type { ReactNode } from "react";
+
 import PageSubtitle from "./PageSubtitle";
 import PageTitle from "./PageTitle";
 import ActionButton from "../ActionButton";

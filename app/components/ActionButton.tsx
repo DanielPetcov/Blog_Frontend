@@ -1,6 +1,7 @@
-import { cn } from "cn";
+import type { ReactNode } from "react";
 import Link from "next/link";
-import { type ReactNode } from "react";
+
+import { cn } from "cn";
 
 export default function ActionButton({
   className,
@@ -21,9 +22,5 @@ export default function ActionButton({
       </Link>
     );
 
-  return (
-    <button className={cn(actionClassName, className)}>
-      {children}
-    </button>
-  );
+  return <button className={cn(actionClassName, className)}>{children}</button>;
 }

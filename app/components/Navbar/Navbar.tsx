@@ -1,4 +1,5 @@
 import Link from "next/link";
+
 import { navLinks } from "@/app/data";
 import { NavbarLink } from "./NavbarLink";
 
@@ -16,7 +17,10 @@ export default function Navbar() {
           <span className="hidden sm:inline">Daniel Petcov</span>
         </Link>
 
-        <nav aria-label="Primary navigation" className="flex items-center gap-1 sm:gap-4">
+        <nav
+          aria-label="Primary navigation"
+          className="flex items-center gap-1 sm:gap-4"
+        >
           {navLinks.map((link) => (
             <NavbarLink key={link.href} link={link} />
           ))}

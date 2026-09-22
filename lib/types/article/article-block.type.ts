@@ -1,21 +1,3 @@
-export interface Article {
-  id: number;
-  title: string;
-  slug: string;
-  description: string | null;
-  coverImage: string | null;
-  content: ArticleBlock[];
-  published: boolean;
-  publishedAt: string | null;
-  createdAt: string;
-  updatedAt: string;
-
-  author: {
-    id: number;
-    name: string;
-  };
-}
-
 export type ArticleBlock =
   | ParagraphBlock
   | HeadingBlock

@@ -1,31 +1,18 @@
-import { ArrowUpRight, FilePenLine } from "lucide-react";
 import Link from "next/link";
+import { ArrowUpRight, FilePenLine } from "lucide-react";
 
-import { AdminArticle } from "@/lib/api/articles";
-
-function formatDate(timestamp: string) {
-  return new Intl.DateTimeFormat("en", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-    timeZone: "UTC",
-  }).format(new Date(timestamp));
-}
-
-interface AdminArticlesListProps {
-  articles: AdminArticle[];
-}
+import { formatDate } from "@/lib/utils";
+import type { AdminArticleListItem } from "@/lib/types/article/article.type";
 
 export default function AdminArticlesList({
   articles,
-}: AdminArticlesListProps) {
+}: {
+  articles: AdminArticleListItem[];
+}) {
   if (articles.length === 0) {
     return (
       <div className="border border-dashed border-border bg-surface px-5 py-12 text-center sm:px-8 sm:py-16">
-        <FilePenLine
-          className="mx-auto size-6 text-brand"
-          aria-hidden="true"
-        />
+        <FilePenLine className="mx-auto size-6 text-brand" aria-hidden="true" />
         <p className="mt-4 text-xl font-medium tracking-[-0.035em] text-navy">
           No articles yet
         </p>

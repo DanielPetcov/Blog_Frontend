@@ -4,6 +4,12 @@ import AdminArticlesSide from "./components/AdminArticlesSide";
 import AdminArticlesList from "./components/AdminArticlesList";
 import AdminArticlesListTitle from "./components/AdminArticlesListTitle";
 import { getArticlesAction } from "@/actions/articles.actions";
+import {
+  getRequestedPage,
+  getPageCount,
+  getCurrentPage,
+  getPageArticles,
+} from "@/lib/utils";
 
 const topics = [
   "All topics",
@@ -28,17 +34,12 @@ export default async function AdminArticlesPage({
     return <div>something went wrong</div>;
   }
 
-  const articles = result.success === true ? result.data.data : [];
+  const articles = result.data.data;
 
-  const requestedPage = Number.parseInt((await searchParams).page ?? "1", 10);
-  const pageCount = Math.ceil(articles.length / articlesPerPage);
-  const currentPage = Number.isFinite(requestedPage)
-    ? Math.min(Math.max(requestedPage, 1), pageCount)
-    : 1;
-  const pageArticles = articles.slice(
-    (currentPage - 1) * articlesPerPage,
-    currentPage * articlesPerPage,
-  );
+  const requestedPage = getRequestedPage((await searchParams).page);
+  const pageCount = getPageCount(articles.length, articlesPerPage);
+  const currentPage = getCurrentPage(requestedPage, pageCount);
+  const pageArticles = getPageArticles(articles, currentPage, articlesPerPage);
 
   return (
     <div>

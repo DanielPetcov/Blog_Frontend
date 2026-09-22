@@ -1,9 +1,7 @@
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
-function pageHref(page: number) {
-  return page === 1 ? "/admin/articles" : `/admin/articles?page=${page}`;
-}
+import { getPageHref } from "@/lib/utils";
 
 interface AdminArticlesNavigationProps {
   currentPage: number;
@@ -21,7 +19,7 @@ export default function AdminArticlesNavigation({
     >
       {currentPage > 1 ? (
         <Link
-          href={pageHref(currentPage - 1)}
+          href={getPageHref(currentPage - 1)}
           className="inline-flex items-center gap-2 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-navy transition-colors hover:text-brand focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
         >
           <ArrowLeft className="size-3" /> Previous
@@ -39,7 +37,7 @@ export default function AdminArticlesNavigation({
           (page) => (
             <Link
               key={page}
-              href={pageHref(page)}
+              href={getPageHref(page)}
               aria-current={page === currentPage ? "page" : undefined}
               className={`grid size-8 place-items-center border font-mono text-[10px] font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand ${page === currentPage ? "border-brand bg-brand text-white" : "border-border text-navy hover:border-brand hover:text-brand"}`}
             >
@@ -50,7 +48,7 @@ export default function AdminArticlesNavigation({
       </div>
       {currentPage < pageCount ? (
         <Link
-          href={pageHref(currentPage + 1)}
+          href={getPageHref(currentPage + 1)}
           className="inline-flex items-center gap-2 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-navy transition-colors hover:text-brand focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
         >
           Next <ArrowRight className="size-3" />

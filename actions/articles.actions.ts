@@ -3,17 +3,23 @@
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 
+import type { GetArticlesQuery } from "@/lib/types/article/article-query.type";
+import type { CreateArticleInput } from "@/lib/types/article/create-article.type";
+import type {
+  CreateArticleActionResult,
+  GetArticlesActionResult,
+  GetArticleActionResult,
+  GetDetailedArticlesActionResult,
+  GetDetailedArticleActionResult,
+} from "@/lib/types/article/results/article-action-result.type";
+
 import {
   createArticleRequest,
-  GetArticlesQuery,
+  getArticleRequest,
   getArticlesRequest,
-  GetArticlesRequestResult,
+  getMainPageArticlesRequest,
+  getPublicArticleRequest,
 } from "@/lib/api/articles";
-import type { CreateArticleInput } from "@/lib/types/create-article";
-
-export type CreateArticleActionResult =
-  | { success: true }
-  | { success: false; error: string };
 
 function isValidArticleInput(input: CreateArticleInput) {
   return (
@@ -21,6 +27,46 @@ function isValidArticleInput(input: CreateArticleInput) {
     /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(input.slug) &&
     input.content.length > 0
   );
+}
+
+export async function getMainPageArticlesAction(): Promise<GetDetailedArticlesActionResult> {
+  return getMainPageArticlesRequest();
+}
+
+export async function getPublicArticleAction(
+  slug: string,
+): Promise<GetDetailedArticleActionResult> {
+  return getPublicArticleRequest(slug);
+}
+
+export async function getArticleAction(
+  slug: string,
+): Promise<GetArticleActionResult> {
+  const accessToken = (await cookies()).get("access_token")?.value;
+
+  if (!accessToken) {
+    return {
+      success: false,
+      error: "Your session has expired. Please sign in again.",
+    };
+  }
+
+  return getArticleRequest(accessToken, slug);
+}
+
+export async function getArticlesAction(
+  query?: GetArticlesQuery,
+): Promise<GetArticlesActionResult> {
+  const accessToken = (await cookies()).get("access_token")?.value;
+
+  if (!accessToken) {
+    return {
+      success: false,
+      error: "Your session has expired. Please sign in again.",
+    };
+  }
+
+  return getArticlesRequest(accessToken, query);
 }
 
 export async function createArticleAction(
@@ -49,19 +95,4 @@ export async function createArticleAction(
   }
 
   return result;
-}
-
-export async function getArticlesAction(
-  query?: GetArticlesQuery,
-): Promise<GetArticlesRequestResult> {
-  const accessToken = (await cookies()).get("access_token")?.value;
-
-  if (!accessToken) {
-    return {
-      success: false,
-      error: "Your session has expired. Please sign in again.",
-    };
-  }
-
-  return getArticlesRequest(accessToken, query);
 }

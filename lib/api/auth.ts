@@ -1,10 +1,16 @@
-import { LoginForm, LoginResponse, LoginResponseData } from "../types/auth";
+import "server-only";
 
-const API_URL = process.env.API_URL;
+import type {
+  LoginForm,
+  LoginResponse,
+  LoginResponseData,
+} from "@/lib/types/auth";
 
 export async function loginRequest(data: LoginForm): Promise<LoginResponse> {
+  const apiUrl = process.env.API_URL;
+
   try {
-    const response = await fetch(`${API_URL}/auth/login`, {
+    const response = await fetch(`${apiUrl}/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

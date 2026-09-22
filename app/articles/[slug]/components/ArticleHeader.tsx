@@ -1,6 +1,8 @@
 import Link from "next/link";
+
 import { ArrowLeft } from "lucide-react";
-import { type Article } from "@/lib/types/article";
+
+import { ArticleDetail } from "@/lib/types/article/article.type";
 
 function formatDate(value: string) {
   return new Intl.DateTimeFormat("en-US", {
@@ -12,10 +14,10 @@ function formatDate(value: string) {
 
 export default function ArticleHeader({
   article,
-  readingTime,
+  // readingTime,
 }: {
-  article: Article;
-  readingTime: number;
+  article: ArticleDetail;
+  // readingTime: number;
 }) {
   const publishedDate = article.publishedAt ?? article.createdAt;
 
@@ -47,8 +49,8 @@ export default function ArticleHeader({
             <span>By {article.author.name}</span>
             <span className="text-brand">/</span>
             <time dateTime={publishedDate}>{formatDate(publishedDate)}</time>
-            <span className="text-brand">/</span>
-            <span>{readingTime} min read</span>
+            {/* <span className="text-brand">/</span>
+            <span>{readingTime} min read</span> */}
           </div>
         </div>
       </div>

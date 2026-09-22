@@ -1,11 +1,4 @@
-export interface AdminDashboardArticle {
-  id: number;
-  title: string;
-  slug: string;
-  published: boolean;
-  publishedAt: string | null;
-  updatedAt: string;
-}
+import { AdminArticleListItem } from "./article/article.type";
 
 export interface AdminDashboardData {
   counts: {
@@ -13,6 +6,6 @@ export interface AdminDashboardData {
     published: number;
     drafts: number;
   };
-  recentArticles: AdminDashboardArticle[];
-  recentDrafts: AdminDashboardArticle[];
+  recentArticles: AdminArticleListItem[];
+  recentDrafts: AdminArticleListItem[];
 }

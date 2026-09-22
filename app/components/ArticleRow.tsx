@@ -1,25 +1,19 @@
-import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 
-export interface ArticleRowProps {
-  id: number;
-  slug: string;
-  title: string;
-  description: string;
-  topic: string;
-  readTime: number;
-  dateCreated: Date;
-}
+import { ArrowUpRight } from "lucide-react";
+import { ArticleDetail } from "@/lib/types/article/article.type";
+import { formatDate } from "@/lib/utils";
 
 export default function ArticleRow({
   id,
   slug,
   title,
   description,
-  topic,
-  readTime,
-  dateCreated,
-}: ArticleRowProps) {
+  createdAt,
+  // topic,
+}: ArticleDetail) {
+  const formatedDate = formatDate(createdAt);
+
   return (
     <Link
       href={`/articles/${slug}`}
@@ -30,9 +24,9 @@ export default function ArticleRow({
       </span>
 
       <div className="min-w-0">
-        <p className="mb-3 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-brand">
+        {/* <p className="mb-3 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-brand">
           {topic}
-        </p>
+        </p> */}
         <h2 className="max-w-3xl text-2xl font-medium leading-[1.02] tracking-[-0.045em] text-navy sm:text-3xl">
           {title}
         </h2>
@@ -40,14 +34,7 @@ export default function ArticleRow({
           {description}
         </p>
         <p className="mt-5 font-mono text-[10px] uppercase tracking-[0.1em] text-foreground-muted">
-          {readTime} min read <span className="mx-2 text-brand">/</span>
-          <time dateTime={dateCreated.toISOString()}>
-            {dateCreated.toLocaleDateString("en-US", {
-              month: "short",
-              day: "2-digit",
-              year: "numeric",
-            })}
-          </time>
+          <time dateTime={formatedDate}>{formatedDate}</time>
         </p>
       </div>
 
