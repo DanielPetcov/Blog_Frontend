@@ -4,7 +4,7 @@ import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import { loginAction } from "@/actions/auth.actions";
-import { LoginForm } from "@/lib/types/auth";
+import { LoginInput } from "@/lib/types/auth";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -25,11 +25,11 @@ export default function LoginPage() {
     setError,
     clearErrors,
     formState: { errors, isSubmitting },
-  } = useForm<LoginForm>();
+  } = useForm<LoginInput>();
 
   const [visiblePass, setVisiblePass] = useState(false);
 
-  const onSubmit: SubmitHandler<LoginForm> = async (data) => {
+  const onSubmit: SubmitHandler<LoginInput> = async (data) => {
     clearErrors("root.server");
 
     const response = await loginAction(data);

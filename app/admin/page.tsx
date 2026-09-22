@@ -1,8 +1,12 @@
 import DashboardContent from "./components/DashboardContent";
-import { getAdminDashboard } from "@/lib/api/admin-dashboard";
+import { getAdminDashboardAction } from "@/actions/admin-dashboard.actions";
 
 export default async function AdminPage() {
-  const dashboard = await getAdminDashboard();
+  const result = await getAdminDashboardAction();
 
-  return <DashboardContent data={dashboard} />;
+  if (!result.success) {
+    return <div>{result.error}</div>;
+  }
+
+  return <DashboardContent data={result.data} />;
 }

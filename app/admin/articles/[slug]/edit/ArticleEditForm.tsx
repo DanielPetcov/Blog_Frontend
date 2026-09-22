@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import type { ArticleDetail } from "@/lib/types/article/article.type";
+import type { Article } from "@/lib/types/article/article.type";
 import type { CreateArticleInput } from "@/lib/types/article/create-article.type";
 
 type ArticleEditFormValues = {
@@ -27,14 +27,14 @@ type ArticleEditFormValues = {
   published: boolean;
 };
 
-function getEditableBody(article: ArticleDetail) {
+function getEditableBody(article: Article) {
   return article.content
     .filter((block) => block.type === "paragraph")
     .map((block) => block.text)
     .join("\n\n");
 }
 
-export default function ArticleEditForm({ article }: { article: ArticleDetail }) {
+export default function ArticleEditForm({ article }: { article: Article }) {
   const router = useRouter();
   const originalBody = getEditableBody(article);
   const hasEditableParagraphs = article.content.some(

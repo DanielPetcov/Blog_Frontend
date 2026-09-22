@@ -1,4 +1,4 @@
-export type GetArticlesQuery = {
+export type ArticleListQuery = {
   page?: number;
   limit?: number;
   q?: string;
@@ -7,3 +7,5 @@ export type GetArticlesQuery = {
   sort?: "updatedAt" | "createdAt" | "publishedAt" | "title";
   order?: "asc" | "desc";
 };
+
+export type PublicArticleListQuery = Omit<ArticleListQuery, "status">;

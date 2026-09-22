@@ -1,4 +1,6 @@
-import { AdminArticleListItem } from "./article/article.type";
+import { ArticleSummary } from "./article/article.type";
+
+export type AdminDashboardArticle = ArticleSummary;
 
 export interface AdminDashboardData {
   counts: {
@@ -6,6 +8,6 @@ export interface AdminDashboardData {
     published: number;
     drafts: number;
   };
-  recentArticles: AdminArticleListItem[];
-  recentDrafts: AdminArticleListItem[];
+  recentArticles: AdminDashboardArticle[];
+  recentDrafts: AdminDashboardArticle[];
 }

@@ -1,6 +1,5 @@
 import { PaginatedResponse } from "../pagination.type";
-import { AdminArticleListItem, ArticleDetail } from "./article.type";
+import { Article, ArticleListItem } from "./article.type";
 
-export type GetArticlesResponse = PaginatedResponse<AdminArticleListItem>;
-export type GetArticleDetailedResponse = ArticleDetail;
-export type GetArticleResponse = ArticleDetail;
+export type ArticleListResponse = PaginatedResponse<ArticleListItem>;
+export type ArticleResponse = Article;

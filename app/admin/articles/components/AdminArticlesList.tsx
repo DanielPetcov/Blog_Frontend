@@ -2,12 +2,12 @@ import Link from "next/link";
 import { ArrowUpRight, FilePenLine } from "lucide-react";
 
 import { formatDate } from "@/lib/utils";
-import type { AdminArticleListItem } from "@/lib/types/article/article.type";
+import type { ArticleListItem } from "@/lib/types/article/article.type";
 
 export default function AdminArticlesList({
   articles,
 }: {
-  articles: AdminArticleListItem[];
+  articles: ArticleListItem[];
 }) {
   if (articles.length === 0) {
     return (

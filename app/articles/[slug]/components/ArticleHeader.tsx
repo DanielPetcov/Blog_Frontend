@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { ArrowLeft } from "lucide-react";
 
-import { ArticleDetail } from "@/lib/types/article/article.type";
+import { Article } from "@/lib/types/article/article.type";
 
 function formatDate(value: string) {
   return new Intl.DateTimeFormat("en-US", {
@@ -16,7 +16,7 @@ export default function ArticleHeader({
   article,
   // readingTime,
 }: {
-  article: ArticleDetail;
+  article: Article;
   // readingTime: number;
 }) {
   const publishedDate = article.publishedAt ?? article.createdAt;

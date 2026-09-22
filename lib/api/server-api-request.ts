@@ -1,10 +1,10 @@
-// lib/api/server-api-request.ts
-
 import "server-only";
 
-type QueryValue = string | number | boolean | null | undefined;
+import type { ApiResult } from "@/lib/types/api";
 
-type ApiRequestOptions = {
+export type QueryValue = string | number | boolean | null | undefined;
+
+export type ApiRequestOptions = {
   path: string;
   accessToken?: string;
   method?: "GET" | "POST" | "PATCH" | "DELETE";
@@ -13,18 +13,6 @@ type ApiRequestOptions = {
   fallbackError: string;
   statusErrors?: Partial<Record<number, string>>;
 };
-
-type ApiRequestResult<T> =
-  | {
-      success: true;
-      data: T;
-      error?: never;
-    }
-  | {
-      success: false;
-      error: string;
-      data?: never;
-    };
 
 const defaultStatusErrors: Partial<Record<number, string>> = {
   400: "The request contains invalid data.",
@@ -68,7 +56,7 @@ export async function serverApiRequest<T>({
   body,
   fallbackError,
   statusErrors = {},
-}: ApiRequestOptions): Promise<ApiRequestResult<T>> {
+}: ApiRequestOptions): Promise<ApiResult<T>> {
   const apiUrl = process.env.API_URL;
 
   if (!apiUrl) {
@@ -84,10 +72,11 @@ export async function serverApiRequest<T>({
 
     addQueryParameters(url, query);
 
-    const headers = new Headers({
-      Authorization: `Bearer ${accessToken}`,
-      Accept: "application/json",
-    });
+    const headers = new Headers({ Accept: "application/json" });
+
+    if (accessToken) {
+      headers.set("Authorization", `Bearer ${accessToken}`);
+    }
 
     if (body !== undefined) {
       headers.set("Content-Type", "application/json");

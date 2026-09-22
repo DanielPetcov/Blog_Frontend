@@ -3,13 +3,8 @@ import AdminArticlesNavigation from "./components/AdminArticlesNavigation";
 import AdminArticlesSide from "./components/AdminArticlesSide";
 import AdminArticlesList from "./components/AdminArticlesList";
 import AdminArticlesListTitle from "./components/AdminArticlesListTitle";
-import { getArticlesAction } from "@/actions/articles.actions";
-import {
-  getRequestedPage,
-  getPageCount,
-  getCurrentPage,
-  getPageArticles,
-} from "@/lib/utils";
+import { listAdminArticlesAction } from "@/actions/articles.actions";
+import { getRequestedPage } from "@/lib/utils";
 
 const topics = [
   "All topics",
@@ -28,7 +23,11 @@ export default async function AdminArticlesPage({
 }: {
   searchParams: Promise<{ page?: string }>;
 }) {
-  const result = await getArticlesAction();
+  const requestedPage = getRequestedPage((await searchParams).page);
+  const result = await listAdminArticlesAction({
+    page: requestedPage,
+    limit: articlesPerPage,
+  });
 
   if (!result.success) {
     return <div>something went wrong</div>;
@@ -36,10 +35,7 @@ export default async function AdminArticlesPage({
 
   const articles = result.data.data;
 
-  const requestedPage = getRequestedPage((await searchParams).page);
-  const pageCount = getPageCount(articles.length, articlesPerPage);
-  const currentPage = getCurrentPage(requestedPage, pageCount);
-  const pageArticles = getPageArticles(articles, currentPage, articlesPerPage);
+  const { page: currentPage, totalPages: pageCount } = result.data.pagination;
 
   return (
     <div>
@@ -50,7 +46,7 @@ export default async function AdminArticlesPage({
         <section aria-labelledby="admin-article-list-heading">
           <AdminArticlesListTitle length={articles.length} />
 
-          <AdminArticlesList articles={pageArticles} />
+          <AdminArticlesList articles={articles} />
 
           <AdminArticlesNavigation
             currentPage={currentPage}

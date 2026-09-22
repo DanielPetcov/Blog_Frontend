@@ -1,26 +1,24 @@
 import "server-only";
 
 import { serverApiRequest } from "@/lib/api/server-api-request";
-import type { CreateArticleInput } from "@/lib/types/article/create-article.type";
-import type { GetArticlesQuery } from "@/lib/types/article/article-query.type";
 import type {
-  GetArticleResponse,
-  GetArticlesResponse,
-  GetArticleDetailedResponse,
+  CreateArticleInput,
+  UpdateArticleInput,
+} from "@/lib/types/article/create-article.type";
+import type {
+  ArticleListQuery,
+  PublicArticleListQuery,
+} from "@/lib/types/article/article-query.type";
+import type {
+  ArticleResponse,
+  ArticleListResponse,
 } from "@/lib/types/article/article-response.type";
-import type {
-  CreateArticleRequestResult,
-  UpdateArticleRequestResult,
-  GetArticleRequestResult,
-  GetArticlesRequestResult,
-  GetArticlesDetailedRequestResult,
-  GetArticleDetailedRequestResult,
-} from "@/lib/types/article/results/article-request-result.type";
+import type { ApiResult } from "@/lib/types/api";
 
-export async function createArticleRequest(
+export async function createAdminArticle(
   article: CreateArticleInput,
   accessToken: string,
-): Promise<CreateArticleRequestResult> {
+): Promise<ApiResult<void>> {
   const result = await serverApiRequest<unknown>({
     path: "admin/articles",
     method: "POST",
@@ -33,20 +31,14 @@ export async function createArticleRequest(
     },
   });
 
-  if (!result.success) {
-    return result;
-  }
-
-  return {
-    success: true,
-  };
+  return result.success ? { success: true, data: undefined } : result;
 }
 
-export async function updateArticleRequest(
+export async function updateAdminArticle(
   slug: string,
-  article: CreateArticleInput,
+  article: UpdateArticleInput,
   accessToken: string,
-): Promise<UpdateArticleRequestResult> {
+): Promise<ApiResult<void>> {
   const result = await serverApiRequest<unknown>({
     path: `admin/articles/${slug}`,
     method: "PATCH",
@@ -59,36 +51,33 @@ export async function updateArticleRequest(
     },
   });
 
-  if (!result.success) {
-    return result;
-  }
-
-  return { success: true };
+  return result.success ? { success: true, data: undefined } : result;
 }
 
-export function getMainPageArticlesRequest(): Promise<GetArticlesDetailedRequestResult> {
-  return serverApiRequest<GetArticleDetailedResponse[]>({
+export function listPublicArticles(
+  query: PublicArticleListQuery = {},
+): Promise<ApiResult<ArticleListResponse>> {
+  return serverApiRequest<ArticleListResponse>({
     path: "articles",
     method: "GET",
+    query,
     fallbackError: "We couldn’t get the articles. Please try again.",
   });
 }
 
-export function getPublicArticleRequest(
-  slug: string,
-): Promise<GetArticleDetailedRequestResult> {
-  return serverApiRequest<GetArticleDetailedResponse>({
+export function getPublicArticle(slug: string): Promise<ApiResult<ArticleResponse>> {
+  return serverApiRequest<ArticleResponse>({
     path: `articles/${slug}`,
     method: "GET",
     fallbackError: "We couldn’t get the articles. Please try again.",
   });
 }
 
-export function getArticlesRequest(
+export function listAdminArticles(
   accessToken: string,
-  query: GetArticlesQuery = {},
-): Promise<GetArticlesRequestResult> {
-  return serverApiRequest<GetArticlesResponse>({
+  query: ArticleListQuery = {},
+): Promise<ApiResult<ArticleListResponse>> {
+  return serverApiRequest<ArticleListResponse>({
     path: "admin/articles",
     method: "GET",
     accessToken,
@@ -97,11 +86,11 @@ export function getArticlesRequest(
   });
 }
 
-export function getArticleRequest(
+export function getAdminArticle(
   accessToken: string,
   slug: string,
-): Promise<GetArticleRequestResult> {
-  return serverApiRequest<GetArticleResponse>({
+): Promise<ApiResult<ArticleResponse>> {
+  return serverApiRequest<ArticleResponse>({
     path: `admin/articles/${slug}`,
     method: "GET",
     accessToken,

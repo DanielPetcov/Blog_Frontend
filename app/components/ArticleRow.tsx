@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import { ArrowUpRight } from "lucide-react";
-import { ArticleDetail } from "@/lib/types/article/article.type";
+import { ArticleListItem } from "@/lib/types/article/article.type";
 import { formatDate } from "@/lib/utils";
 
 export default function ArticleRow({
@@ -11,7 +11,7 @@ export default function ArticleRow({
   description,
   createdAt,
   // topic,
-}: ArticleDetail) {
+}: ArticleListItem) {
   const formatedDate = formatDate(createdAt);
 
   return (

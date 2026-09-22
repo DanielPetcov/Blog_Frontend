@@ -2,29 +2,22 @@ import { ArrowDown, ArrowRight } from "lucide-react";
 import ArticleRow from "./components/ArticleRow";
 import ActionButton from "./components/ActionButton";
 import TopicRow, { TopicRowProps } from "./components/TopicRow";
-import { getMainPageArticlesAction } from "@/actions/articles.actions";
-
-const topics: TopicRowProps[] = [
-  {
-    slug: "system",
-    title: "system design",
-    count: 8,
-  },
-  {
-    slug: "database",
-    title: "databases",
-    count: 5,
-  },
-  {
-    slug: "backend",
-    title: "backend",
-    count: 7,
-  },
-];
+import { listPublicArticlesAction } from "@/actions/articles.actions";
+import { listPublicTopicsAction } from "@/actions/topics.actions";
 
 export default async function Home() {
-  const response = await getMainPageArticlesAction();
-  const articles = response.data ? response.data : [];
+  const [articlesResponse, topicsResponse] = await Promise.all([
+    listPublicArticlesAction({ limit: 3 }),
+    listPublicTopicsAction(3),
+  ]);
+  const articles = articlesResponse.success ? articlesResponse.data.data : [];
+  const topics: TopicRowProps[] = topicsResponse.success
+    ? topicsResponse.data.map((topic) => ({
+        slug: topic.slug,
+        title: topic.name,
+        count: topic.articleCount,
+      }))
+    : [];
 
   return (
     <div>

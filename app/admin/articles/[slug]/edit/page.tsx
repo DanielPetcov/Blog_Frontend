@@ -1,4 +1,4 @@
-import { getArticleAction } from "@/actions/articles.actions";
+import { getAdminArticleAction } from "@/actions/articles.actions";
 import ArticleEditForm from "./ArticleEditForm";
 
 type ArticlePageEditProps = {
@@ -9,7 +9,7 @@ export default async function ArticlePageEdit({
   params,
 }: ArticlePageEditProps) {
   const { slug } = await params;
-  const result = await getArticleAction(slug);
+  const result = await getAdminArticleAction(slug);
 
   if (!result.success) {
     return <div>{result.error}</div>;

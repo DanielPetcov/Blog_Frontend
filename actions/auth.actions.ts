@@ -3,11 +3,11 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-import { LoginForm } from "@/lib/types/auth";
-import { loginRequest } from "@/lib/api/auth";
+import { LoginInput } from "@/lib/types/auth";
+import { login } from "@/lib/api/auth";
 
-export async function loginAction(data: LoginForm) {
-  const response = await loginRequest(data);
+export async function loginAction(data: LoginInput) {
+  const response = await login(data);
 
   if (!response.success) {
     return response;
