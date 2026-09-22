@@ -3,10 +3,10 @@ export const navLinks: NavLinkType[] = [
     name: "Articles",
     href: "/articles",
   },
-  {
-    name: "Projects",
-    href: "/projects",
-  },
+  // {
+  //   name: "Projects",
+  //   href: "/projects",
+  // },
   {
     name: "About",
     href: "/about",

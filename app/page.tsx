@@ -49,7 +49,7 @@ export default async function Home() {
           </div>
         </div>
 
-        <div
+        {/* <div
           aria-hidden="true"
           className="relative aspect-square max-h-[430px] border border-navy/20 bg-surface"
         >
@@ -61,7 +61,7 @@ export default async function Home() {
           <p className="absolute bottom-4 left-4 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-navy">
             System / 001
           </p>
-        </div>
+        </div> */}
       </section>
 
       <section id="latest" className="border-y border-border bg-surface/70">
