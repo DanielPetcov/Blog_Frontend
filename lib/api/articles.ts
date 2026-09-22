@@ -54,6 +54,20 @@ export async function updateAdminArticle(
   return result.success ? { success: true, data: undefined } : result;
 }
 
+export async function deleteAdminArticle(
+  id: number,
+  accessToken: string,
+): Promise<ApiResult<void>> {
+  const result = await serverApiRequest<unknown>({
+    path: `admin/articles/${id}`,
+    method: "DELETE",
+    accessToken,
+    fallbackError: "We couldn’t delete the article. Please try again.",
+  });
+
+  return result.success ? { success: true, data: undefined } : result;
+}
+
 export function listPublicArticles(
   query: PublicArticleListQuery = {},
 ): Promise<ApiResult<ArticleListResponse>> {

@@ -16,12 +16,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import type { CreateArticleInput } from "@/lib/types/article/create-article.type";
+import type { TopicWithArticleCount } from "@/lib/types/topic";
 
 type CreateArticleFormValues = {
   title: string;
   slug: string;
   description: string;
   coverImage: string;
+  topicSlug: string;
   body: string;
   published: boolean;
 };
@@ -35,7 +37,11 @@ function createSlug(title: string) {
     .replace(/^-+|-+$/g, "");
 }
 
-export default function ArticleCreateForm() {
+export default function ArticleCreateForm({
+  topics,
+}: {
+  topics: TopicWithArticleCount[];
+}) {
   const router = useRouter();
   const {
     register,
@@ -51,6 +57,7 @@ export default function ArticleCreateForm() {
       slug: "",
       description: "",
       coverImage: "",
+      topicSlug: "",
       body: "",
       published: false,
     },
@@ -63,6 +70,7 @@ export default function ArticleCreateForm() {
       slug: values.slug.trim(),
       description: values.description.trim() || null,
       coverImage: values.coverImage.trim() || null,
+      topicSlug: values.topicSlug.trim() || null,
       content: [{ type: "paragraph", text: values.body.trim() }],
       published: values.published,
     };
@@ -202,6 +210,37 @@ export default function ArticleCreateForm() {
             />
             {errors.coverImage && (
               <FieldError>{errors.coverImage.message}</FieldError>
+            )}
+          </Field>
+
+          <Field data-invalid={Boolean(errors.topicSlug)}>
+            <FieldLabel htmlFor="article-topic">Topic</FieldLabel>
+            <Input
+              id="article-topic"
+              list="article-topic-options"
+              placeholder="system-design"
+              aria-invalid={Boolean(errors.topicSlug)}
+              disabled={isSubmitting}
+              {...register("topicSlug", {
+                pattern: {
+                  value: /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
+                  message:
+                    "Use lowercase letters, numbers, and single hyphens only.",
+                },
+              })}
+            />
+            <datalist id="article-topic-options">
+              {topics.map((topic) => (
+                <option key={topic.id} value={topic.slug}>
+                  {topic.name}
+                </option>
+              ))}
+            </datalist>
+            <FieldDescription>
+              Select an existing topic or enter a new lowercase slug.
+            </FieldDescription>
+            {errors.topicSlug && (
+              <FieldError>{errors.topicSlug.message}</FieldError>
             )}
           </Field>
         </div>

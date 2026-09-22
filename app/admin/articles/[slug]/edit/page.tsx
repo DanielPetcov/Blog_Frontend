@@ -1,4 +1,5 @@
 import { getAdminArticleAction } from "@/actions/articles.actions";
+import { listAdminTopicsAction } from "@/actions/topics.actions";
 import ArticleEditForm from "./ArticleEditForm";
 
 type ArticlePageEditProps = {
@@ -9,11 +10,19 @@ export default async function ArticlePageEdit({
   params,
 }: ArticlePageEditProps) {
   const { slug } = await params;
-  const result = await getAdminArticleAction(slug);
+  const [result, topicsResult] = await Promise.all([
+    getAdminArticleAction(slug),
+    listAdminTopicsAction(),
+  ]);
 
   if (!result.success) {
     return <div>{result.error}</div>;
   }
 
-  return <ArticleEditForm article={result.data} />;
+  return (
+    <ArticleEditForm
+      article={result.data}
+      topics={topicsResult.success ? topicsResult.data : []}
+    />
+  );
 }

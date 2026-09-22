@@ -19,6 +19,8 @@ export default async function Home() {
       }))
     : [];
 
+  console.log(topics);
+
   return (
     <div>
       <section className="mx-auto grid max-w-7xl gap-12 px-5 pb-24 pt-16 sm:px-8 sm:pb-32 sm:pt-24 lg:grid-cols-[1.15fr_0.85fr] lg:items-end lg:gap-16">
@@ -73,9 +75,6 @@ export default async function Home() {
                 Latest notes
               </h2>
             </div>
-            <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-foreground-muted">
-              03 entries
-            </span>
           </div>
           <div className="border-b border-border">
             {articles.map((article) => (

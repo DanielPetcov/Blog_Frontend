@@ -22,10 +22,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
   return (
     <article>
-      <ArticleHeader
-        article={article}
-        // readingTime={getReadingTime(article.content)}
-      />
+      <ArticleHeader article={article} />
       <div className="mx-auto max-w-3xl px-5 py-14 sm:px-8 sm:py-20">
         <ArticleContent content={article.content} />
         <ArticleFooter />

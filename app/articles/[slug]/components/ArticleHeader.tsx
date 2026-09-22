@@ -12,13 +12,7 @@ function formatDate(value: string) {
   }).format(new Date(value));
 }
 
-export default function ArticleHeader({
-  article,
-  // readingTime,
-}: {
-  article: Article;
-  // readingTime: number;
-}) {
+export default function ArticleHeader({ article }: { article: Article }) {
   const publishedDate = article.publishedAt ?? article.createdAt;
 
   return (
@@ -32,11 +26,11 @@ export default function ArticleHeader({
         </Link>
 
         <div className="mt-14">
-          <div className="flex items-center gap-3 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-brand">
-            <span>Entry / {String(article.id).padStart(2, "0")}</span>
-            <span className="text-navy/30">—</span>
-            <span>System design</span>
-          </div>
+          {article.topic && (
+            <div className="flex items-center gap-3 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-brand">
+              <span>{article.topic.name}</span>
+            </div>
+          )}
           <h1 className="mt-5 text-5xl font-medium leading-[0.94] tracking-[-0.075em] text-navy sm:text-6xl lg:text-7xl">
             {article.title}
           </h1>
@@ -49,8 +43,6 @@ export default function ArticleHeader({
             <span>By {article.author.name}</span>
             <span className="text-brand">/</span>
             <time dateTime={publishedDate}>{formatDate(publishedDate)}</time>
-            {/* <span className="text-brand">/</span>
-            <span>{readingTime} min read</span> */}
           </div>
         </div>
       </div>

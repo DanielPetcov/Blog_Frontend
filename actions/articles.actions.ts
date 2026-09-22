@@ -19,6 +19,7 @@ import { getAccessToken, sessionExpiredResult } from "./action-auth";
 
 import {
   createAdminArticle,
+  deleteAdminArticle,
   getAdminArticle,
   getPublicArticle,
   listAdminArticles,
@@ -30,7 +31,8 @@ function isValidCreateArticleInput(input: CreateArticleInput) {
   return (
     input.title.trim().length >= 3 &&
     /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(input.slug) &&
-    input.content.length > 0
+    input.content.length > 0 &&
+    isValidTopicSlug(input.topicSlug)
   );
 }
 
@@ -40,7 +42,14 @@ function isValidUpdateArticleInput(input: UpdateArticleInput) {
     (input.title === undefined || input.title.trim().length >= 3) &&
     (input.slug === undefined ||
       /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(input.slug)) &&
-    (input.content === undefined || input.content.length > 0)
+    (input.content === undefined || input.content.length > 0) &&
+    isValidTopicSlug(input.topicSlug)
+  );
+}
+
+function isValidTopicSlug(topicSlug?: string | null) {
+  return (
+    !topicSlug || /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(topicSlug.trim())
   );
 }
 
@@ -131,6 +140,25 @@ export async function updateArticleAction(
     if (input.slug && slug !== input.slug) {
       revalidatePath(`/articles/${input.slug}`);
     }
+  }
+
+  return result;
+}
+
+export async function deleteArticleAction(id: number): Promise<ApiResult<void>> {
+  const accessToken = await getAccessToken();
+
+  if (!accessToken) {
+    return sessionExpiredResult();
+  }
+
+  const result = await deleteAdminArticle(id, accessToken);
+
+  if (result.success) {
+    revalidatePath("/");
+    revalidatePath("/articles");
+    revalidatePath("/admin");
+    revalidatePath("/admin/articles");
   }
 
   return result;
